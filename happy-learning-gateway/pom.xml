@@ -49,11 +49,21 @@
 			<artifactId>mysql-connector-j</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		<!-- async-sql - Async, Netty based, JVM database drivers for PostgreSQL and MySQL written in Kotlin-->
+		<dependency>
+			<groupId>com.github.jasync-sql</groupId>
+			<artifactId>jasync-r2dbc-mysql</artifactId>
+			<version>2.1.16</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-
+		<!-- retrieve data in a relational database using reactive database drivers-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-r2dbc</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>

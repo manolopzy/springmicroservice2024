@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.worldexplorers.happylearning.gateway.authorization.user.AuthUser;
 import com.worldexplorers.happylearning.gateway.authorization.user.User;
 
 import reactor.core.publisher.Mono;
@@ -27,6 +28,12 @@ public class AuthController {
 		return new ResponseEntity<Mono<User>>(HttpStatus.OK);
 	}
 	
+	@PostMapping("/signin")
+	public ResponseEntity<Mono<String>> signin(@RequestBody AuthUser user) {
+		System.out.println("user = " + user);
+		return new ResponseEntity<Mono<String>>(Mono.just("hello world"), HttpStatus.OK);
+	}
+
 	
 //	@Autowired
 //	  private EmployeeService employeeService;
