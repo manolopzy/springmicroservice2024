@@ -2,8 +2,10 @@ package com.worldexplorers.happylearning.gateway.authorization.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,21 +15,20 @@ import com.worldexplorers.happylearning.gateway.authorization.user.User;
 
 import reactor.core.publisher.Mono;
 
+//@CrossOrigin//(origins = "*")
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-
+	
 	@GetMapping("/signin")
 	public ResponseEntity<Mono<String>> helloWorld() {
 		return new ResponseEntity<Mono<String>>(Mono.just("hello world"), HttpStatus.OK);
 	}
-
 	@PostMapping("/signup")
 	public ResponseEntity<Mono<User>> signup(@RequestBody User user) {
 		
 		return new ResponseEntity<Mono<User>>(HttpStatus.OK);
 	}
-	
 	@PostMapping("/signin")
 	public ResponseEntity<Mono<String>> signin(@RequestBody AuthUser user) {
 		System.out.println("user = " + user);

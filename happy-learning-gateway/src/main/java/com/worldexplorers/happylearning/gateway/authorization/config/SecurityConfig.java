@@ -1,21 +1,9 @@
 package com.worldexplorers.happylearning.gateway.authorization.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
-import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.web.server.SecurityWebFilterChain;
-
-import com.worldexplorers.happylearning.gateway.authorization.user.User;
 
 @Configuration
-@EnableWebFluxSecurity
+//@EnableWebFluxSecurity
 public class SecurityConfig {
 //	@Bean
 //	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -34,20 +22,28 @@ public class SecurityConfig {
 //
 //		return http.build();
 //	}
-	
-	@Bean
-    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-		http
-        .authorizeExchange(exchanges -> exchanges
-        	.pathMatchers("/games/**").hasRole("USER")
-            .pathMatchers("/auth/**").permitAll()
-            .anyExchange().permitAll()
-        )
-        .httpBasic(Customizer.withDefaults())
-        .formLogin(formLogin -> formLogin
-            .loginPage("/login")
-        );
-		return http.build();
+	/**
+	 * In case of Webflux, despite using Spring Security the 
+	 * most preferred way of applying CORS configuration to oncoming 
+	 * requests is to use the CorsWebFilter. We can disable the CORS 
+	 * integration with Spring security and instead integrate with 
+	 * CorsWebFilter by providing a CorsConfigurationSource:
+	 * @param http
+	 * @return
+	 */
+//	@Bean
+//    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
+//		http//.cors(cors -> cors.disable())
+//        .authorizeExchange(exchanges -> exchanges
+//        	.pathMatchers("/games/**").hasRole("USER")
+//            .pathMatchers("/auth/**").permitAll()
+//            .anyExchange().permitAll()
+//        )
+//        .httpBasic(Customizer.withDefaults())
+//        .formLogin(formLogin -> formLogin
+//            .loginPage("/login")
+//        );
+//		return http.build();
 //        http
 //            .authorizeExchange()
 //                .pathMatchers("/process_login", "/login", "/logout").permitAll()
@@ -62,13 +58,13 @@ public class SecurityConfig {
 //            .logout().disable();
 //
 //        return http.build();
-    }
+//    }
 	
-	@Bean
-	public UserDetailsService userDetailsService(PasswordEncoder encoder) {
-		User user = new User("username", encoder.encode("password"), null, null, null, null, null, null);
-		return new InMemoryUserDetailsManager(user);
-	}
+//	@Bean
+//	public UserDetailsService userDetailsService(PasswordEncoder encoder) {
+//		User user = new User("username", encoder.encode("password"), null, null, null, null, null, null);
+//		return new InMemoryUserDetailsManager(user);
+//	}
 //
 ////	@Autowired
 ////	private UserDetailsService userDetailsService;
@@ -101,9 +97,9 @@ public class SecurityConfig {
 	 * 
 	 * @return
 	 */
-	@Bean
-	PasswordEncoder encoder() {
-		return new BCryptPasswordEncoder();
-	}
+//	@Bean
+//	PasswordEncoder encoder() {
+//		return new BCryptPasswordEncoder();
+//	}
 
 }

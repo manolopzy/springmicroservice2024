@@ -12,4 +12,12 @@ public class HappyLearningGatewayApplication {
 	}
 
 
+//	@Autowired
+//	private CorsWebFilter corsWebFilter;
+//	
+//	@PostConstruct
+//	public void init() {
+//		
+//		System.out.println("cors config = " + corsWebFilter.toString());;
+//	}
 }
