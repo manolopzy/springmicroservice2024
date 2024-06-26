@@ -4,9 +4,12 @@ import java.util.Arrays;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.MapReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,7 +31,25 @@ public class SecurityConfiguration {
 	    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
 	        http.httpBasic(Customizer.withDefaults());
 	    	http.securityMatcher(new PathPatternParserServerWebExchangeMatcher("/**"))
-	                .authorizeExchange(exchanges -> exchanges.anyExchange().authenticated());
+	                .authorizeExchange((exchanges) -> exchanges
+//	                		.anyExchange()
+//	                        .authenticated()
+	                		// any URL that starts with /admin/ requires the role "ROLE_ADMIN"
+	                        .pathMatchers("/admin/**").hasRole("ADMIN")
+	                        // a POST to /users requires the role "USER_POST"
+//	                        .pathMatchers(HttpMethod.POST, "/users").hasAuthority("USER_POST")
+//	                        // a request to /users/{username} requires the current authentication's username
+//	                        // to be equal to the {username}
+//	                        .pathMatchers("/users/{username}").access((authentication, context) ->
+//	                            authentication
+//	                                .map(Authentication::getName)
+//	                                .map((username) -> username.equals(context.getVariables().get("username")))
+//	                                .map(AuthorizationDecision::new)
+//	                        )
+	                        .pathMatchers("/fruits/**").permitAll()
+	                        .pathMatchers("/users/**").permitAll()
+	                        .pathMatchers("/auth/**").permitAll());
+	                        // any other request requires the user to be authenticated);
 	        return http.build();
 	    }
 		
@@ -75,7 +96,7 @@ public class SecurityConfiguration {
 //			corsConfig.addAllowedMethod("POST");
 //			corsConfig.addAllowedMethod("OPTIONS");
 			//corsConfig.setAllowedMethods(Arrays.asList("POST"));
-			corsConfig.setAllowedMethods(Arrays.asList("GET", "DELETE", "POST"));
+			corsConfig.setAllowedMethods(Arrays.asList("GET", "UPDATE", "DELETE", "POST"));
 			corsConfig.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
 //			corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "Requestor-Type"));
 //			corsConfig.setExposedHeaders(Arrays.asList("X-Get-Header"));
