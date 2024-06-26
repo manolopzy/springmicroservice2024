@@ -2,3 +2,6 @@
 .project
 .classpath
 target/
+mvnw
+mvnw.cmd
+HELP.md

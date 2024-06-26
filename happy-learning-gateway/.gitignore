@@ -3,3 +3,6 @@
 .classpath
 target/
 /.factorypath
+mvnw
+mvnw.cmd
+HELP.md
