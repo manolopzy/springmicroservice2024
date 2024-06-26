@@ -1,0 +1,20 @@
+docker run -d --hostname your-host-name --name your-broker-name -e RABBITMQ_DEFAULT_USER=your-user -e RABBITMQ_DEFAULT_PASSWORD=your-password -p 5672:5672 -p 15672:15672 rabbitmq:3.9-management-alpine 
+
+
+
+docker run -d --hostname localhost --name worldexplorers -e RABBITMQ_DEFAULT_USER=username -e RABBITMQ_DEFAULT_PASSWORD=ypassword -p 5672:5672 -p 15672:15672 rabbitmq:3.13-management
+
+
+C:\Windows\System32>docker images
+REPOSITORY                 TAG               IMAGE ID       CREATED        SIZE
+alpine                     latest            1d34ffeaf190   4 weeks ago    7.79MB
+mysql                      latest            fcd86ff8ce8c   8 weeks ago    578MB
+rabbitmq                   3.13-management   a4e86f36e8fd   4 months ago   251MB
+docker/welcome-to-docker   latest            c1f619b6477e   7 months ago   18.6MB
+
+C:\Windows\System32>docker run -d --hostname localhost --name worldexplorers -e RABBITMQ_DEFAULT_USER=username -e RABBITMQ_DEFAULT_PASSWORD=ypassword -p 5672:5672 -p 15672:15672 rabbitmq:3.13-management
+809df8440bbe462e96e0b45ea638cc22dd24ee10ba6879a6035d469477d90f88
+
+C:\Windows\System32>docker ps
+CONTAINER ID   IMAGE                      COMMAND                  CREATED          STATUS          PORTS                                                                                                         NAMES
+809df8440bbe   rabbitmq:3.13-management   "docker-entrypoint.s…"   45 seconds ago   Up 44 seconds   4369/tcp, 5671/tcp, 0.0.0.0:5672->5672/tcp, 15671/tcp, 15691-15692/tcp, 25672/tcp, 0.0.0.0:15672->15672/tcp   worldexplorers
