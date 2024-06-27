@@ -59,6 +59,12 @@ public class SecurityConfiguration {
 						.pathMatchers("/fruits/**").permitAll()
 						.pathMatchers("/users/**").permitAll()
 						.pathMatchers("/auth/**").permitAll());
+		//By default, the csrf protection is not disabled
+    	//Cross origin request will be rejected by returning a status code 403 forbidden
+    	//https://docs.spring.io/spring-security/reference/reactive/exploits/csrf.html
+    	//https://www.baeldung.com/java-spring-fix-403-error
+    	//This configuration only disables the csrf protection on this filter chain, it will not affect other filter chains
+		http.csrf(csrf -> csrf.disable());
 		// any other request requires the user to be authenticated);
 		return http.build();
 	}
