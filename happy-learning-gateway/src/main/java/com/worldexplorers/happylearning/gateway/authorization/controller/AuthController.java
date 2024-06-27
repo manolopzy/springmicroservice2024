@@ -1,6 +1,7 @@
 package com.worldexplorers.happylearning.gateway.authorization.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,7 @@ import reactor.core.publisher.Mono;
 
 //@CrossOrigin//(origins = "*")
 @RestController
-@RequestMapping("/auth")
+@RequestMapping(path = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuthController {
 	
 	@GetMapping("/signin")
@@ -29,10 +30,10 @@ public class AuthController {
 		
 		return new ResponseEntity<Mono<User>>(HttpStatus.OK);
 	}
-	@PostMapping("/signin")
-	public ResponseEntity<Mono<String>> signin(@RequestBody AuthUser user) {
+	@PostMapping(path = "/signin")
+	public ResponseEntity<Mono<AuthUser>> signin(@RequestBody AuthUser user) {
 		System.out.println("user = " + user);
-		return new ResponseEntity<Mono<String>>(Mono.just("hello world"), HttpStatus.OK);
+		return new ResponseEntity<Mono<AuthUser>>(Mono.just(user), HttpStatus.OK);
 	}
 
 	
