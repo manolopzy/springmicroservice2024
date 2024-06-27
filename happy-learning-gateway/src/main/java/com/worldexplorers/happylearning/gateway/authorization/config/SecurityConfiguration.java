@@ -26,17 +26,27 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 @EnableWebFluxSecurity
 public class SecurityConfiguration {
 
-
-	    @Bean
-	    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-	        http.httpBasic(Customizer.withDefaults());
-	    	http.securityMatcher(new PathPatternParserServerWebExchangeMatcher("/**"))
-	                .authorizeExchange((exchanges) -> exchanges
+	/**
+	 * We use {@link new PathPatternParserServerWebExchangeMatcher("/**")} to specify 
+	 * the patterns of requests that are dealt with by this filter chain.
+	 * In this case, all types of requests will be dealt by this filter chain
+	 * 
+	 * We can define various filter chains, each one of them is in charge of 
+	 * some specific examinations
+	 * 
+	 * @param http
+	 * @return
+	 */
+	@Bean
+	public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+		http.httpBasic(Customizer.withDefaults());
+		http.securityMatcher(new PathPatternParserServerWebExchangeMatcher("/**"))
+				.authorizeExchange((exchanges) -> exchanges
 //	                		.anyExchange()
 //	                        .authenticated()
-	                		// any URL that starts with /admin/ requires the role "ROLE_ADMIN"
-	                        .pathMatchers("/admin/**").hasRole("ADMIN")
-	                        // a POST to /users requires the role "USER_POST"
+						// any URL that starts with /admin/ requires the role "ROLE_ADMIN"
+						.pathMatchers("/admin/**").hasRole("ADMIN")
+						// a POST to /users requires the role "USER_POST"
 //	                        .pathMatchers(HttpMethod.POST, "/users").hasAuthority("USER_POST")
 //	                        // a request to /users/{username} requires the current authentication's username
 //	                        // to be equal to the {username}
@@ -46,21 +56,32 @@ public class SecurityConfiguration {
 //	                                .map((username) -> username.equals(context.getVariables().get("username")))
 //	                                .map(AuthorizationDecision::new)
 //	                        )
-	                        .pathMatchers("/fruits/**").permitAll()
-	                        .pathMatchers("/users/**").permitAll()
-	                        .pathMatchers("/auth/**").permitAll());
-	                        // any other request requires the user to be authenticated);
-	        return http.build();
-	    }
-		
-	    @Bean
-	    public MapReactiveUserDetailsService userDetailsService() {
-	        UserDetails user = User.withUsername("username")
-	                .password("password")
-	                .roles("USER")
-	                .build();
-	        return new MapReactiveUserDetailsService(user);
-	    }
+						.pathMatchers("/fruits/**").permitAll()
+						.pathMatchers("/users/**").permitAll()
+						.pathMatchers("/auth/**").permitAll());
+		// any other request requires the user to be authenticated);
+		return http.build();
+	}
+
+	/**
+	 * All requests must come from a authenticated user
+	 * @param http
+	 * @return
+	 */
+//	@Bean
+//	public SecurityWebFilterChain generalFilterChain(ServerHttpSecurity http) {
+//		http.httpBasic(Customizer.withDefaults());
+//		http.securityMatcher(new PathPatternParserServerWebExchangeMatcher("/**"))
+//				.authorizeExchange((exchanges) -> exchanges
+//	                		.anyExchange()
+//	                        .authenticated());
+//		return http.build();
+//	}
+	@Bean
+	public MapReactiveUserDetailsService userDetailsService() {
+		UserDetails user = User.withUsername("username").password("password").roles("USER").build();
+		return new MapReactiveUserDetailsService(user);
+	}
 
 //	    @Bean
 //	    public CorsConfigurationSource corsConfiguration() {
@@ -80,41 +101,41 @@ public class SecurityConfiguration {
 //	        return source;
 //	    }
 
-	    /**
-	     * When {@link @EnableWebFluxSecurity} is used, the default cors configuration 
-	     * will be overwritten by Spring webflux security
-	     * @return
-	     */
-		@Bean
-		public CorsConfigurationSource corsConfiguration() {
-			CorsConfiguration corsConfig = new CorsConfiguration();
-			corsConfig.applyPermitDefaultValues();
-			corsConfig.setAllowCredentials(true);
+	/**
+	 * When {@link @EnableWebFluxSecurity} is used, the default cors configuration
+	 * will be overwritten by Spring webflux security
+	 * 
+	 * @return
+	 */
+	@Bean
+	public CorsConfigurationSource corsConfiguration() {
+		CorsConfiguration corsConfig = new CorsConfiguration();
+		corsConfig.applyPermitDefaultValues();
+		corsConfig.setAllowCredentials(true);
 //			corsConfig.addAllowedMethod("GET");
 //			corsConfig.addAllowedMethod("DELETE");
 //			corsConfig.addAllowedMethod("PATCH");
 //			corsConfig.addAllowedMethod("POST");
 //			corsConfig.addAllowedMethod("OPTIONS");
-			//corsConfig.setAllowedMethods(Arrays.asList("POST"));
-			corsConfig.setAllowedMethods(Arrays.asList("GET", "UPDATE", "DELETE", "POST"));
-			corsConfig.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+		// corsConfig.setAllowedMethods(Arrays.asList("POST"));
+		corsConfig.setAllowedMethods(Arrays.asList("GET", "UPDATE", "DELETE", "POST"));
+		corsConfig.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
 //			corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "Requestor-Type"));
 //			corsConfig.setExposedHeaders(Arrays.asList("X-Get-Header"));
-			corsConfig.setAllowedHeaders(Arrays.asList("*"));
-			corsConfig.setExposedHeaders(Arrays.asList("*"));
-			UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-			source.registerCorsConfiguration("/**", corsConfig);
-			return source;
-		}
+		corsConfig.setAllowedHeaders(Arrays.asList("*"));
+		corsConfig.setExposedHeaders(Arrays.asList("*"));
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", corsConfig);
+		return source;
+	}
 
-		
-	    @Bean
-	    public CorsWebFilter corsWebFilter() {
-	        return new CorsWebFilter(corsConfiguration());
-	    }
-	    
-	    @Bean
-		PasswordEncoder encoder() {
-			return new BCryptPasswordEncoder();
-		}
+	@Bean
+	public CorsWebFilter corsWebFilter() {
+		return new CorsWebFilter(corsConfiguration());
+	}
+
+	@Bean
+	PasswordEncoder encoder() {
+		return new BCryptPasswordEncoder();
+	}
 }
