@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.worldexplorers.happylearning.gateway.authorization.user.AuthUser;
+import com.worldexplorers.happylearning.gateway.authorization.user.RegistrationUser;
 import com.worldexplorers.happylearning.gateway.authorization.user.User;
 
 import reactor.core.publisher.Mono;
@@ -31,9 +31,11 @@ public class AuthController {
 		return new ResponseEntity<Mono<User>>(HttpStatus.OK);
 	}
 	@PostMapping(path = "/signin")
-	public ResponseEntity<Mono<AuthUser>> signin(@RequestBody AuthUser user) {
+	public ResponseEntity<Mono<AuthenticatedUser>> signin(@RequestBody RegistrationUser user) {
 		System.out.println("user = " + user);
-		return new ResponseEntity<Mono<AuthUser>>(Mono.just(user), HttpStatus.OK);
+		AuthenticatedUser authenticatedUser = new AuthenticatedUser(user);
+		authenticatedUser.setJwt("lsdkjfldskjflk");
+		return new ResponseEntity<Mono<AuthenticatedUser>>(Mono.just(authenticatedUser), HttpStatus.OK);
 	}
 
 	

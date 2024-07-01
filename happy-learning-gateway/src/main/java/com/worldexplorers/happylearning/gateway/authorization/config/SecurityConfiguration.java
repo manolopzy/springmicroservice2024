@@ -46,6 +46,8 @@ public class SecurityConfiguration {
 //	                        .authenticated()
 						// any URL that starts with /admin/ requires the role "ROLE_ADMIN"
 						.pathMatchers("/admin/**").hasRole("ADMIN")
+						.pathMatchers("/arithmetic/**").authenticated()
+						.pathMatchers("/gamification/**").authenticated()
 						// a POST to /users requires the role "USER_POST"
 //	                        .pathMatchers(HttpMethod.POST, "/users").hasAuthority("USER_POST")
 //	                        // a request to /users/{username} requires the current authentication's username
@@ -87,8 +89,9 @@ public class SecurityConfiguration {
 //	}
 	@Bean
 	public MapReactiveUserDetailsService userDetailsService() {
-		UserDetails user = User.withUsername("username").password("password").roles("USER").build();
-		return new MapReactiveUserDetailsService(user);
+		UserDetails user1 = User.withUsername("username").password(encoder().encode("password")).roles("USER").build();
+		UserDetails user2 = User.withUsername("manolo").password(encoder().encode("1234")).roles("USER").build();
+		return new MapReactiveUserDetailsService(user1, user2);
 	}
 
 //	    @Bean
