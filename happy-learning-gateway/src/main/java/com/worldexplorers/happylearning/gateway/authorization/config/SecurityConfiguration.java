@@ -58,10 +58,11 @@ public class SecurityConfiguration {
 //	                                .map((username) -> username.equals(context.getVariables().get("username")))
 //	                                .map(AuthorizationDecision::new)
 //	                        )
-						//.pathMatchers("/auth/**").hasRole("USER")
+						.pathMatchers(HttpMethod.POST, "/auth/signup").permitAll()
+						.pathMatchers("/auth/**").authenticated()
 						.pathMatchers("/fruits/**").permitAll()
 						.pathMatchers("/users/**").permitAll()
-						.pathMatchers("/auth/**").permitAll()
+						//.pathMatchers("/auth/**").permitAll()
 						);
 		//By default, the csrf protection is not disabled
     	//Cross origin request will be rejected by returning a status code 403 forbidden

@@ -27,7 +27,7 @@ public class AuthController {
 	}
 	@PostMapping("/signup")
 	public ResponseEntity<Mono<User>> signup(@RequestBody User user) {
-		
+		System.out.println("signup = " + user);
 		return new ResponseEntity<Mono<User>>(HttpStatus.OK);
 	}
 	@PostMapping(path = "/signin")
