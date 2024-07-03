@@ -62,6 +62,7 @@ public class SecurityConfiguration {
 						.pathMatchers("/auth/**").authenticated()
 						.pathMatchers("/fruits/**").permitAll()
 						.pathMatchers("/users/**").permitAll()
+						.pathMatchers("/hello").permitAll()
 						//.pathMatchers("/auth/**").permitAll()
 						);
 		//By default, the csrf protection is not disabled
