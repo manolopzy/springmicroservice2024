@@ -58,7 +58,7 @@ public class SecurityConfiguration {
 //	                                .map((username) -> username.equals(context.getVariables().get("username")))
 //	                                .map(AuthorizationDecision::new)
 //	                        )
-						.pathMatchers(HttpMethod.POST, "/auth/signup").permitAll()
+						.pathMatchers(HttpMethod.POST, "/auth/signup", "/auth/signin").permitAll()
 						.pathMatchers("/auth/**").authenticated()
 						.pathMatchers("/fruits/**").permitAll()
 						.pathMatchers("/users/**").permitAll()
