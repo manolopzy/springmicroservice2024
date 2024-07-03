@@ -46,8 +46,10 @@ public class SecurityConfiguration {
 //	                        .authenticated()
 						// any URL that starts with /admin/ requires the role "ROLE_ADMIN"
 						.pathMatchers("/admin/**").hasRole("ADMIN")
-						.pathMatchers("/arithmetic/**").authenticated()
-						.pathMatchers("/gamification/**").authenticated()
+//						.pathMatchers("/arithmetic/**").authenticated()
+//						.pathMatchers("/gamification/**").authenticated()
+						.pathMatchers("/arithmetic/**").permitAll()
+						.pathMatchers("/gamification/**").permitAll()
 						// a POST to /users requires the role "USER_POST"
 //	                        .pathMatchers(HttpMethod.POST, "/users").hasAuthority("USER_POST")
 //	                        // a request to /users/{username} requires the current authentication's username
