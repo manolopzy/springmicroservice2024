@@ -9,13 +9,17 @@ import org.springframework.web.server.ServerWebExchange;
 
 import reactor.core.publisher.Mono;
 
+/**
+ * This example shows us how to write a pre global filter, it runs 
+ * before any other filter.
+ */
 @Component
 public class LoggingGlobalPreFilter implements GlobalFilter{
 	private final Logger logger = LoggerFactory.getLogger(LoggingGlobalPreFilter.class);
 
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-		logger.info("Global Pre Filter executed");
+		logger.info("Global Pre Filter request headers " + exchange.getRequest().getHeaders().toString());
 		return chain.filter(exchange);
 	}
 }

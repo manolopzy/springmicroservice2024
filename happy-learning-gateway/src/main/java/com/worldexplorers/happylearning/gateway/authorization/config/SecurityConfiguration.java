@@ -39,7 +39,17 @@ public class SecurityConfiguration {
 	 */
 	@Bean
 	public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+		/**
+		 * http basic provides us an authentication filter which using an 
+		 * authentication manager that delegates the responsibility to an 
+		 * authentication provider that could have different authentication logic 
+		 * implementations
+		 */
 		http.httpBasic(Customizer.withDefaults());
+		/**
+		 * new PathPatternParserServerWebExchangeMatcher("/**")
+		 * Applying to all path 
+		 */
 		http.securityMatcher(new PathPatternParserServerWebExchangeMatcher("/**"))
 				.authorizeExchange((exchanges) -> exchanges
 //	                		.anyExchange()
