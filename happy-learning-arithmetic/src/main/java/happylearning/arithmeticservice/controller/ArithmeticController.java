@@ -54,7 +54,7 @@ public class ArithmeticController {
         );
         return ResponseEntity.ok(attemptCopy);
 	}
-    @GetMapping
+    @GetMapping("/attempts")
     ResponseEntity<Iterable<ArithmeticAttempt>> getStatistics(@RequestParam("alias") String alias) {
         return ResponseEntity.ok(
         		arithmeticService.getArithmeticAttempts(alias)

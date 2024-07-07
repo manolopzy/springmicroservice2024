@@ -22,10 +22,10 @@ public class EventHandler {
 
     @RabbitListener(queues = "${arithmetic.queue}")
     void handleMultiplicationSolved(final ArithmeticSolvedEvent event) {
-        log.info("Arithmetic Solved Event received with userid: {}, arithmeticAttemptResultId: {}", event.getUserId(), event.getArithmeticResultAttemptId());
+        log.info("Arithmetic Solved Event received with userid: {}, getArithmeticAttemptId: {}", event.getUserId(), event.getArithmeticAttemptId());
         try {
         	gameService.newArithmeticAttempt(event.getUserId(),
-                    event.getArithmeticResultAttemptId(),
+                    event.getArithmeticAttemptId(),
                     event.isCorrect());
         } catch (final Exception e) {
             log.error("Error when trying to process " + event.getClass().getName(), e);

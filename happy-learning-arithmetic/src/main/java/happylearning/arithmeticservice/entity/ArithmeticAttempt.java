@@ -31,7 +31,7 @@ public class ArithmeticAttempt {
 		arithmetic = null;
 		result = -1;
 		correct = false;
-		createdAt = null;
+		this.createdAt = new Date();
 	}
 
 	public ArithmeticAttempt(User user, ArithmeticOperation arithmetic, int resultAttempt, boolean correct) {

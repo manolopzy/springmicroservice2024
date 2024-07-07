@@ -1,5 +1,10 @@
 package happylearning.arithmeticservice.entity;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
 import lombok.Data;
 
 /**
@@ -25,6 +30,7 @@ public final class ArithmeticOperation {
 	private  int factorB;
 	private String operator;
 	private byte level;
+	private List<String> options;
 	public ArithmeticOperation() {
 	}
 	public ArithmeticOperation(int factorA, int factorB, String operator) {
@@ -32,6 +38,14 @@ public final class ArithmeticOperation {
 		this.factorA = factorA;
 		this.factorB = factorB;
 		this.level = 3;
+		Random random = new Random();
+		int result = factorA + factorB;
+		this.options = new ArrayList<String>(4);
+		options.add((result - random.nextInt(-5, 5)) + "");
+		options.add((result - random.nextInt(-5, 5)) + "");
+		options.add((result - random.nextInt(-5, 5)) + "");
+		options.add(result + "");
+		Collections.shuffle(options);
 	}
 	
 	@Override
@@ -57,7 +71,7 @@ public final class ArithmeticOperation {
 				return false;
 			}
 		}
-		case "×": {
+		case "*": {
 			if(attemptResult == factorA * factorB) {
 				return true;
 			}
@@ -65,7 +79,7 @@ public final class ArithmeticOperation {
 				return false;
 			}
 		}
-		case "÷": {
+		case "/": {
 			if(attemptResult == factorA / factorB) {
 				return true;
 			}

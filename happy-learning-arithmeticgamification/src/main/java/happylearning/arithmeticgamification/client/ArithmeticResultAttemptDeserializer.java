@@ -35,7 +35,7 @@ public class ArithmeticResultAttemptDeserializer
         return new ArithmeticResultAttempt(node.get("user").get("alias").asText(),
                 node.get("arithmetic").get("factorA").asInt(),
                 node.get("arithmetic").get("factorB").asInt(),
-                node.get("resultAttempt").asInt(),
+                node.get("result").asInt(),
                 node.get("correct").asBoolean());
     }
 }

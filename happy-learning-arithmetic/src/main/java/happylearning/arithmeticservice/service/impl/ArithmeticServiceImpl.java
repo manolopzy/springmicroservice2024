@@ -57,7 +57,9 @@ public class ArithmeticServiceImpl implements ArithmeticService {
 		
 		checkedAttempt = arithmeticAttemptRepository.save(checkedAttempt);
 		log.info("checkedAttempt = " + checkedAttempt.toString());
-		eventDispatcher.send(new ArithmeticAttemptEvent(checkedAttempt.getId(), attempt.getUser().getAlias(), checkedAttempt.isCorrect()));
+		ArithmeticAttemptEvent objToSend = new ArithmeticAttemptEvent(checkedAttempt.getId(), attempt.getUser().getAlias(), checkedAttempt.isCorrect());
+		log.info("objToSend = " + objToSend.toString());
+		eventDispatcher.send(objToSend);
 		
 		return isCorrect;
 	}
@@ -71,7 +73,7 @@ public class ArithmeticServiceImpl implements ArithmeticService {
 	@Override
 	public Iterable<ArithmeticAttempt> getArithmeticAttempts(String alias) {
 		QArithmeticAttempt qQuery = new QArithmeticAttempt("arithmeticAttempt");
-		Iterable<ArithmeticAttempt> result = arithmeticAttemptRepository.findAll(qQuery.user.alias.eq("manolopzy"));
+		Iterable<ArithmeticAttempt> result = arithmeticAttemptRepository.findAll(qQuery.user.alias.eq(alias));
 		return result;
 	}
 }

@@ -18,12 +18,12 @@ import lombok.ToString;
 @EqualsAndHashCode
 class ArithmeticSolvedEvent implements Serializable {
 
-	private final String arithmeticResultAttemptId;
+	private final String arithmeticAttemptId;
 	private final String userId;
 	private final boolean correct;
 
 	public ArithmeticSolvedEvent() {
-		this.arithmeticResultAttemptId = null;
+		this.arithmeticAttemptId = null;
 		this.userId = null;
 		this.correct = false;
 	}
