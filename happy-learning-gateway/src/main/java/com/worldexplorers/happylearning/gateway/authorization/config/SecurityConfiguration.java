@@ -5,11 +5,10 @@ import java.util.Arrays;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.MapReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -163,4 +162,23 @@ public class SecurityConfiguration {
 	PasswordEncoder encoder() {
 		return new BCryptPasswordEncoder();
 	}
+	
+	
+	
+//	@Bean
+//    public SecurityWebFilterChain filterChain(ServerHttpSecurity http) {
+//        final var permitAll = new String[]{"/user-svr/country/list"};
+//        return http.csrf(c->c.disable())
+//                .httpBasic(c->c.disable())
+//                .formLogin(c->c.disable())
+//                .authorizeExchange(
+//                		exchanges->exchanges
+//                		.pathMatchers(permitAll).permitAll()
+//                        .pathMatchers("/**").hasAuthority("USER")
+//                        .anyExchange().authenticated()
+//                        )
+//                .authorizeExchange(exchanges->exchanges.and().addFilterAt(jwsFilter, SecurityWebFiltersOrder.AUTHENTICATION))
+//                
+//                .build();
+//    }
 }
