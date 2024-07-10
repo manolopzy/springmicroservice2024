@@ -1,9 +1,12 @@
 package com.worldexplorers.happylearning.gateway.jwt.config;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,17 +27,16 @@ public class JwtSecurityConfig {
 	@Autowired
 	private JwtAuthenticationFilter jwtAuthenticationFilter;
 
+	
 	@Autowired
-	private OtpAuthenticationProvider otpAuthenticationProvider;
-
-	@Autowired
-	private UsernamePasswordAuthenticationProvider usernamePasswordAuthenticationProvider;
-
+	private AuthenticationManager authenticationManager;
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-		http.authenticationProvider(otpAuthenticationProvider)
-				.authenticationProvider(usernamePasswordAuthenticationProvider);
+//		http.authenticationProvider(otpAuthenticationProvider)
+//				.authenticationProvider(usernamePasswordAuthenticationProvider);
+
+		http.authenticationManager(authenticationManager);
 
 		http.addFilterAt(initialAuthenticationFilter, BasicAuthenticationFilter.class)
 				.addFilterAfter(jwtAuthenticationFilter, BasicAuthenticationFilter.class);
@@ -43,9 +45,5 @@ public class JwtSecurityConfig {
 		return http.build();
 	}
 
-	@Bean
-	public AuthenticationManager authenticationManager(HttpSecurity http) 
-	  throws Exception {
-	    return http.getSharedObject(AuthenticationManagerBuilder.class).build();
-	}
+	
 }

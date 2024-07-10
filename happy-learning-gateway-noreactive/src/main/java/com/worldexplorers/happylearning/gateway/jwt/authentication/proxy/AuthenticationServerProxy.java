@@ -28,6 +28,7 @@ public class AuthenticationServerProxy {
 	@Value("${auth.server.otp.check}")
 	private String otpCheck;
 	
+	
 	public void sendAuth(String username, String password) {
 		String url = baseUrl + userAuth;
 		User body = new User();
@@ -48,4 +49,6 @@ public class AuthenticationServerProxy {
 
 		return response.getStatusCode().equals(HttpStatus.OK);
 	}
+	
+	
 }

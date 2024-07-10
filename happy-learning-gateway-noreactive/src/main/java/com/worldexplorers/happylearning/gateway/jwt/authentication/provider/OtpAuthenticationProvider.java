@@ -5,10 +5,11 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.stereotype.Component;
 
 import com.worldexplorers.happylearning.gateway.jwt.authentication.OtpAuthentication;
 import com.worldexplorers.happylearning.gateway.jwt.authentication.proxy.AuthenticationServerProxy;
-
+@Component
 public class OtpAuthenticationProvider implements AuthenticationProvider {
 
 	@Autowired

@@ -7,16 +7,21 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
-import org.springframework.web.client.RestTemplate;
 
 import com.worldexplorers.happylearning.gateway.jwt.authentication.provider.OtpAuthenticationProvider;
 import com.worldexplorers.happylearning.gateway.jwt.authentication.provider.UsernamePasswordAuthenticationProvider;
 
 @Configuration
-public class ProjectConfig {
-	@Bean
-	public RestTemplate restTemplate() {
-		return new RestTemplate();
-	}
+public class AuthenticationManagerConfig {
+
+	@Autowired
+	private OtpAuthenticationProvider otpAuthenticationProvider;
+
+	@Autowired
+	private UsernamePasswordAuthenticationProvider usernamePasswordAuthenticationProvider;
 	
+	@Bean
+	public AuthenticationManager authenticationManager() {
+		return new ProviderManager(List.of(otpAuthenticationProvider, usernamePasswordAuthenticationProvider));
+	}
 }

@@ -30,7 +30,7 @@ public class InitialAuthenticationFilter extends OncePerRequestFilter {
 	private String signingKey;
 	
 	@Autowired
-	private AuthenticationManager manager;
+	private AuthenticationManager authenticationManager;
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
@@ -42,11 +42,11 @@ public class InitialAuthenticationFilter extends OncePerRequestFilter {
 			Authentication a = new UsernamePasswordAuthentication(username, password);
 			//The authentication logic is provided by an authentication provider
 			//{@link UsernamePasswordAuthenticationProvider}
-			manager.authenticate(a);
+			authenticationManager.authenticate(a);
 		} else {
 			Authentication a = new OtpAuthentication(username, code);
 			//{@link OtpAuthenticationProvider}
-			a = manager.authenticate(a);
+			a = authenticationManager.authenticate(a);
 			SecretKey key = Keys.hmacShaKeyFor(signingKey.getBytes(StandardCharsets.UTF_8));
 			String jwt = Jwts.builder().claims(Map.of("username", username)).signWith(key).compact();
 			response.setHeader("Authorization", jwt);
