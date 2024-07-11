@@ -1,0 +1,20 @@
+
+server:
+  port: 9092
+spring:
+  application:
+    name: happy-learning-gateway-noreactive
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: happy.learning.arithmetic
+          uri: lb://happy.learning.arithmetic
+          predicates:
+            - Path=/arithmetic/**
+        - id: happy.learning.arithmeticgamification
+          uri: lb://happy.learning.arithmeticgamification
+          predicates:
+            - Path=/gamification/**

@@ -11,7 +11,6 @@ import com.worldexplorers.happylearning.entity.AuthUser;
 import com.worldexplorers.happylearning.entity.Otp;
 import com.worldexplorers.happylearning.repository.OptRepository;
 import com.worldexplorers.happylearning.repository.UserRepository;
-import com.worldexplorers.happylearning.utils.GenerateCodeUtil;
 
 import jakarta.transaction.Transactional;
 
@@ -46,6 +45,7 @@ public class UserService {
 			AuthUser u = o.get();
 			if (passwordEncoder.matches(user.getPassword(), u.getPassword())) {
 				String code = renewOtp(u);
+				System.out.println("code = " + code);
 				send(code, "", "");
 			} else {
 				throw new BadCredentialsException("Bad credentials.");
@@ -61,7 +61,7 @@ public class UserService {
 	}
 
 	private String renewOtp(AuthUser u) {
-		String code = GenerateCodeUtil.generateCode();
+		String code = "5678";//GenerateCodeUtil.generateCode();
 		Optional<Otp> userOtp = otpRepository.findOtpByUsername(u.getUsername());
 		if (userOtp.isPresent()) {
 			Otp otp = userOtp.get();
