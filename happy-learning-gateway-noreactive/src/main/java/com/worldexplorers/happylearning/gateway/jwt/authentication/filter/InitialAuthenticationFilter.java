@@ -6,6 +6,9 @@ import java.util.Map;
 
 import javax.crypto.SecretKey;
 
+import org.apache.hc.core5.http.HttpStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,6 +29,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class InitialAuthenticationFilter extends OncePerRequestFilter {
 
+	private Logger logger = LoggerFactory.getLogger(InitialAuthenticationFilter.class);
 	@Value("${jwt.signing.key}")
 	private String signingKey;
 	
@@ -43,13 +47,21 @@ public class InitialAuthenticationFilter extends OncePerRequestFilter {
 			//The authentication logic is provided by an authentication provider
 			//{@link UsernamePasswordAuthenticationProvider}
 			authenticationManager.authenticate(a);
+			System.out.println("send response ok to client");
+			logger.info("send response ok to client", username);
+			response.setStatus(HttpStatus.SC_OK);
 		} else {
 			Authentication a = new OtpAuthentication(username, code);
 			//{@link OtpAuthenticationProvider}
 			a = authenticationManager.authenticate(a);
 			SecretKey key = Keys.hmacShaKeyFor(signingKey.getBytes(StandardCharsets.UTF_8));
 			String jwt = Jwts.builder().claims(Map.of("username", username)).signWith(key).compact();
+			logger.info("set response header with code", code);
+			System.out.println("send response ok to client" + code);
 			response.setHeader("Authorization", jwt);
+			System.out.println("send response ok to client" + jwt);
+			logger.info("set response header with jwt", jwt);
+			response.setStatus(HttpStatus.SC_OK);
 		}
 	}
 

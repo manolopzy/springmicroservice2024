@@ -1,6 +1,6 @@
 
 server:
-  port: 9092
+  port: 8084
 spring:
   application:
     name: happy-learning-gateway-noreactive

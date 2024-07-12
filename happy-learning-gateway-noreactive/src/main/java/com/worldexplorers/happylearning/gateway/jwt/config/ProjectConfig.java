@@ -11,4 +11,14 @@ public class ProjectConfig {
 		return new RestTemplate();
 	}
 	
+	
+	
+//    public void addCorsMappings(CorsRegistry corsRegistry) {
+//        corsRegistry.addMapping("/**")
+//        
+//        .allowedHeaders("*")
+//          .allowedOrigins("http://localhost", "http://localhost:3000", "http://localhost:8084")
+//          .allowedMethods("GET", "POST", "PUT", "DELETE")
+//          .maxAge(3600L);
+//    }
 }
