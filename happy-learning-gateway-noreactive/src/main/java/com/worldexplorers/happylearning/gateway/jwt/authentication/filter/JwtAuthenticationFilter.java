@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.crypto.SecretKey;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -33,19 +35,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
 	@Value("${jwt.signing.key}")
 	private String signingKey;
-
+	private Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		String jwt = request.getHeader("Authorization");
-		
+		logger.info("jwt = " + jwt);
+		logger.info("headers = " + request.getHeaderNames());
+		System.out.println("jwt = " + jwt);
 		SecretKey key = Keys.hmacShaKeyFor(signingKey.getBytes(StandardCharsets.UTF_8));
 		//Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwt).getBody();
 		
 		Claims claims = (Claims) Jwts.parser().verifyWith(key).build().parse(jwt).getPayload();
 		
 		String username = String.valueOf(claims.get("username"));
-		
+		logger.info("username = " + username);
+		System.out.println("username = " + username);
 		GrantedAuthority a = new SimpleGrantedAuthority("user");
 		
 		var auth = new UsernamePasswordAuthentication(username, null, List.of(a));

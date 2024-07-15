@@ -23,6 +23,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -58,10 +59,37 @@ public class InitialAuthenticationFilter extends OncePerRequestFilter {
 			String jwt = Jwts.builder().claims(Map.of("username", username)).signWith(key).compact();
 			logger.info("set response header with code", code);
 			System.out.println("send response ok to client" + code);
-			response.setHeader("Authorization", jwt);
+			//response.setHeader("Authorization", jwt);
+			response.addHeader("Authorization", jwt);
+			response.addCookie(new Cookie("Authorization", jwt));
 			System.out.println("send response ok to client" + jwt);
 			logger.info("set response header with jwt", jwt);
-			response.setStatus(HttpStatus.SC_OK);
+			
+			//Location: $url-of-created-resource
+			//Access-Control-Expose-Headers: Location
+			response.addHeader("Location", "$url-of-created-resource");
+			response.addHeader("Access-Control-Expose-Headers", "Location");
+			/**
+			 * there is a header limitation with cors requests which is different 
+			 * from a request launched by cURL.
+			 * Without using "Access-Control-Expose-Headers": "Authorization" to tell 
+			 * the browser to expose a specific header or content returned as 
+			 * header, it will automatically prevent newly added headers 
+			 * from showing to a application developed by such as 
+			 * Reactjs, Angular or other technologies from where the html .. 
+			 * etc. static content is loaded.
+			 */
+			response.addHeader("Authorization", jwt);
+			response.addHeader("Access-Control-Expose-Headers", "Authorization");
+			
+//			response.addHeader("Access-Control-Request-Headers", "Authorization");
+//			response.addHeader("Authorization", jwt);
+			
+			
+			//Access-Control-Request-Headers: SESSION_ID
+//			SESSION_ID: $current_session_id
+//			response.addHeader("Access-Control-Request-Headers", "Authorization");
+			response.setStatus(HttpStatus.SC_CREATED);
 		}
 	}
 

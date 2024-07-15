@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -16,6 +17,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.worldexplorers.happylearning.gateway.jwt.authentication.filter.InitialAuthenticationFilter;
 import com.worldexplorers.happylearning.gateway.jwt.authentication.filter.JwtAuthenticationFilter;
+import com.worldexplorers.happylearning.gateway.jwt.authentication.filter.PostFilteringChainLogging;
 
 @Configuration
 @EnableWebSecurity
@@ -34,7 +36,11 @@ public class JwtSecurityConfig {
 		CorsConfiguration configuration = new CorsConfiguration();
 		configuration.setAllowedOrigins(Arrays.asList("http://localhost", "http://localhost:3000", "http://localhost:8084"));
 		//configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-		
+		configuration.setAllowedMethods(Arrays.asList("HEAD",
+                "GET", "POST", "PUT", "DELETE", "PATCH","OPTIONS"));//Allowed Methods
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type","Access-Control-Request-Headers","Access-Control-Request-Method",
+               "Accept","Access-Control-Allow-Headers", "Access-Control-Expose-Headers"));//Allowed Headers
 //		configuration.setAllowedOrigins(Arrays.asList("*"));
 	    configuration.setAllowedMethods(Arrays.asList("*"));
 	    configuration.setAllowedHeaders(Arrays.asList("*"));
@@ -50,10 +56,13 @@ public class JwtSecurityConfig {
 
 		http.csrf(c->c.disable());
 		http.cors(c->c.configurationSource(corsConfigurationSource()));
+		//http.authorizeHttpRequests(c->c.requestMatchers("/**").permitAll());
 		http.authenticationManager(authenticationManager);
 
 		http.addFilterAt(initialAuthenticationFilter, BasicAuthenticationFilter.class)
 				.addFilterAfter(jwtAuthenticationFilter, BasicAuthenticationFilter.class);
+		http.addFilterAfter(new PostFilteringChainLogging(), AuthorizationFilter.class);
+		
 		http.authorizeHttpRequests(c -> c.anyRequest().authenticated());
 
 		return http.build();
